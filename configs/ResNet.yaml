@@ -24,8 +24,8 @@ optimizer:
   lr: 1e-4 # 1e-4
   weight_decay: 1e-2
 
-# checkpoint: "" 
-checkpoint: "./log/ResNet/checkpoints/0013.pth" # continue to learn or run demo
+checkpoint: "" 
+# checkpoint: "./log/ResNet/checkpoints/0013.pth" # continue to learn or run demo
 
 prefix: "./log/ResNet"
 
