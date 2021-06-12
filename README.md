@@ -210,6 +210,8 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 <div align="center"><img src="./results/0-resnet18-gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
 <div align="center"><img src="./results/0-resnet18-guided_gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer4-Fake.png" width=200></div>
 
+<div align="center"><img src="./results/0-vgg11_bn-gradcam-features.28-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/0-densenet121-gradcam-features-Fake.png" width=200><img src="./results/0-efficientnet-gradcam-_conv_head-Fake.png" width=200></div>
+
 ## demo.py
 
 ```bash

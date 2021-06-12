@@ -5,6 +5,8 @@
 Author:   Kazuto Nakashima
 URL:      https://github.com/kazuto1011/grad-cam-pytorch
 USAGE:    python visualize.py --arch=resnet18 --model_path=log/ResNet/checkpoints/0019.pth --target_layer=layer4 --image_paths=samples/fake.jpg --config_file configs/ResNet.yaml
+USAGE:    python visualize.py --arch=vgg11_bn --model_path=log/VGG/checkpoints/0012.pth --target_layer=features --image_paths=samples/fake.jpg --config_file configs/VGG.yaml
+USAGE:    python visualize.py --arch=densenet121 --model_path=log/DenseNet/checkpoints/0015.pth --target_layer=features --image_paths=samples/fake.jpg --config_file configs/DenseNet.yaml
 '''
 
 from __future__ import print_function
@@ -25,6 +27,7 @@ from torchsummary import summary
 from torchvision import models, transforms
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+from efficientnet_pytorch import EfficientNet
 from checkpoint import load_checkpoint
 from flags import Flags
 
@@ -124,8 +127,26 @@ def main(image_paths, model_path, target_layer, arch, config_file, topk=1, outpu
     classes = ['Fake', 'Real']
 
     # Model from torchvision
-    model = models.__dict__[arch](pretrained=True)
-    model.fc = nn.Linear(512, 2)
+    
+    if arch == 'resnet18':
+        model = models.__dict__[arch](pretrained=True)
+        model.fc = nn.Linear(512, 2)
+    elif arch == 'vgg11_bn':
+        model = models.__dict__[arch](pretrained=True)
+        model.classifier = nn.Sequential(
+            nn.Linear(512 * 7 * 7, 4096),
+            nn.ReLU(True),
+            nn.Dropout(),
+            nn.Linear(4096, 4096),
+            nn.ReLU(True),
+            nn.Dropout(),
+            nn.Linear(4096, options.data.num_classes),
+        )
+    elif arch == 'densenet121':
+        model = models.__dict__[arch](pretrained=True)
+        model.classifier = nn.Linear(1024, options.data.num_classes)
+    elif arch == 'efficientnet':
+        model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=2)
 
     checkpoint = load_checkpoint(options.test_checkpoint, cuda=True)
     model.load_state_dict(checkpoint['model'])
@@ -142,7 +163,8 @@ def main(image_paths, model_path, target_layer, arch, config_file, topk=1, outpu
     model.to(options.device)
     model.eval()
 
-    summary(model, (3, 224, 224), 32)
+    # summary(model, (3, 224, 224), 32)
+    print(model)
 
     # Images
     images, raw_images = load_images([image_paths])
