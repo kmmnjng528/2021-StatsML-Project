@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torchvision.models as models # https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html
 from tqdm import tqdm
 from efficientnet_pytorch import EfficientNet # https://github.com/lukemelas/EfficientNet-PyTorch
-from networks.VGG import VGG
+# from networks.VGG import VGG, ResNet, DenseNet, EfficientNet
 
 def get_network(
     options

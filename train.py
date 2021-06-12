@@ -27,7 +27,7 @@ from checkpoint import (
 )
 from utils import get_network, get_optimizer
 from dataset import get_train_valid_dataloader
-from metrics import accuracy
+from metrics import accuracy, precision, recall
 
 
 def run_epoch(
@@ -48,6 +48,8 @@ def run_epoch(
 
     losses = []
     acces = []
+    precisions = []
+    recalls = []
 
     with tqdm(
         desc="{} ({})".format(epoch_text, "Train" if train else "Valid"),
@@ -66,6 +68,8 @@ def run_epoch(
 
             loss = F.cross_entropy(scores, targets)
             acc = accuracy(targets, preds, options.batch_size)
+            pre = precision(targets, preds)
+            rec = recall(targets, preds)
 
             if train:
                 optimizer.zero_grad()
@@ -74,6 +78,8 @@ def run_epoch(
                 
             losses.append(loss.item())
             acces.append(acc)
+            precisions.append(pre)
+            recalls.append(rec)
 
             pbar.update(curr_batch_size)
 
@@ -85,6 +91,8 @@ def run_epoch(
     result = {
         "loss": np.mean(losses),
         "accuracy": np.mean(acces),
+        "precision": np.mean(precisions),
+        "recall": np.mean(recalls),
     }
 
     return result
@@ -206,8 +214,12 @@ def main(config_file):
     writer = init_tensorboard(name=options.prefix.strip("-"))
     start_epoch = checkpoint["epoch"]
     train_accuracy = checkpoint["train_accuracy"]
+    train_recall = checkpoint["train_recall"]
+    train_precision = checkpoint["train_precision"]
     train_losses = checkpoint["train_losses"]
     valid_accuracy = checkpoint["valid_accuracy"]
+    valid_recall = checkpoint["valid_recall"]
+    valid_precision = checkpoint["valid_precision"]
     valid_losses = checkpoint["valid_losses"]
     learning_rates = checkpoint["lr"]
 
@@ -241,6 +253,8 @@ def main(config_file):
         )
 
         train_losses.append(train_result["loss"])
+        train_precision.append(train_result["precision"])
+        train_recall.append(train_result["recall"])
         train_accuracy.append(train_result["accuracy"])
 
         epoch_lr = lr_scheduler.get_last_lr()[-1]
@@ -259,6 +273,8 @@ def main(config_file):
         )
 
         valid_losses.append(valid_result["loss"])
+        valid_precision.append(valid_result["precision"])
+        valid_recall.append(valid_result["recall"])
         valid_accuracy.append(valid_result["accuracy"])
 
         ###################################
@@ -272,8 +288,12 @@ def main(config_file):
                 "epoch": start_epoch + epoch + 1,
                 "train_losses": train_losses,
                 "train_accuracy": train_accuracy,
+                "train_precision": train_precision,
+                "train_recall": train_recall,
                 "valid_losses": valid_losses,
                 "valid_accuracy":valid_accuracy,
+                "valid_precision": valid_precision,
+                "valid_recall": valid_recall,
                 "lr": learning_rates,
                 "model": model.state_dict(),
                 "optimizer": optimizer.state_dict(),
@@ -291,16 +311,24 @@ def main(config_file):
             output_string = (
                 "{epoch_text}: "
                 "Train Accuracy = {train_accuracy:.5f}, "
+                "Train Precision = {train_precision:.5f}, "
+                "Train Recall = {train_recall:.5f}, "
                 "Train Loss = {train_loss:.5f}, "
                 "Valid Accuracy = {valid_accuracy:.5f}, "
+                "Valid Precision = {valid_precision:.5f}, "
+                "Valid Recall = {valid_recall:.5f}, "
                 "Valid Loss = {valid_loss:.5f}, "
                 "lr = {lr} "
                 "(time elapsed {time})"
             ).format(
                 epoch_text=epoch_text,
                 train_accuracy=train_result["accuracy"],
+                train_precision=train_result["precision"],
+                train_recall=train_result["recall"],
                 train_loss=train_result["loss"],
                 valid_accuracy=valid_result["accuracy"],
+                valid_precision=valid_result["precision"],
+                valid_recall=valid_result["recall"],
                 valid_loss=valid_result["loss"],
                 lr=epoch_lr,
                 time=elapsed_time,
@@ -312,8 +340,12 @@ def main(config_file):
                 start_epoch + epoch + 1,
                 train_result["loss"],
                 train_result["accuracy"],
+                train_result["precision"],
+                train_result["recall"],
                 valid_result["loss"],
                 valid_result["accuracy"],
+                valid_result["precision"],
+                valid_result["recall"],
                 model,
             )
 

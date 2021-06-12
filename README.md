@@ -129,8 +129,8 @@ seed: 42
 device: 'cuda'
 
 data:
-  train: "data/face_images.csv"
-  test: ""
+  train: "data/train.csv"
+  test: "data/test.csv"
   random_split: True # if True, random split from train files
   test_proportions: 0.2 # only if random_split is True
   crop: True
@@ -208,6 +208,7 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 ```
 
 <div align="center"><img src="./results/0-resnet18-gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
+<div align="center"><img src="./results/0-resnet18-guided_gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer4-Fake.png" width=200></div>
 
 ## demo.py
 

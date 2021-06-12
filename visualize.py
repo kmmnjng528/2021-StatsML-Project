@@ -4,7 +4,7 @@
 '''
 Author:   Kazuto Nakashima
 URL:      https://github.com/kazuto1011/grad-cam-pytorch
-USAGE:    python visualize.py --arch=resnet18 --model_path=log/ResNet/checkpoints/0013.pth --target_layer=layer4 --image_paths=samples/fake.jpg
+USAGE:    python visualize.py --arch=resnet18 --model_path=log/ResNet/checkpoints/0019.pth --target_layer=layer4 --image_paths=samples/fake.jpg --config_file configs/ResNet.yaml
 '''
 
 from __future__ import print_function
@@ -25,6 +25,8 @@ from torchsummary import summary
 from torchvision import models, transforms
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+from checkpoint import load_checkpoint
+from flags import Flags
 
 from utils import (
     BackPropagation,
@@ -109,22 +111,35 @@ model_names = sorted(
     if name.islower() and not name.startswith("__") and callable(models.__dict__[name])
 )
 
-def main(image_paths, model_path, target_layer, arch, topk=1, output_dir="./results", cuda=True):
+def main(image_paths, model_path, target_layer, arch, config_file, topk=1, output_dir="./results", cuda=True):
     """
     Visualize model responses given multiple images
     """
 
+    options = Flags(config_file).get()
     device = get_device(cuda)
 
     # Synset words
     # classes = get_classtable()
-    classes = ['Real', 'Fake']
+    classes = ['Fake', 'Real']
 
     # Model from torchvision
     model = models.__dict__[arch](pretrained=True)
     model.fc = nn.Linear(512, 2)
-    model.load_state_dict(torch.load(model_path), strict=False)
-    model.to(device)
+
+    checkpoint = load_checkpoint(options.test_checkpoint, cuda=True)
+    model.load_state_dict(checkpoint['model'])
+    start_epoch = checkpoint["epoch"]
+    train_accuracy = checkpoint["train_accuracy"]
+    train_recall = checkpoint["train_recall"]
+    train_precision = checkpoint["train_precision"]
+    train_losses = checkpoint["train_losses"]
+    valid_accuracy = checkpoint["valid_accuracy"]
+    valid_recall = checkpoint["valid_recall"]
+    valid_precision = checkpoint["valid_precision"]
+    valid_losses = checkpoint["valid_losses"]
+    learning_rates = checkpoint["lr"]
+    model.to(options.device)
     model.eval()
 
     summary(model, (3, 224, 224), 32)

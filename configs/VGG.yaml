@@ -4,8 +4,8 @@ seed: 42
 device: 'cuda'
 
 data:
-  train: "data/face_images.csv"
-  test: ""
+  train: "data/train.csv"
+  test: "data/test.csv"
   random_split: True # if True, random split from train files
   test_proportions: 0.2 # only if random_split is True
   crop: True
@@ -26,6 +26,7 @@ optimizer:
 
 checkpoint: "" 
 # checkpoint: "./log/VGG/checkpoints/0003.pth"
+test_checkpoint: "./log/VGG/checkpoints/0012.pth"
 
 prefix: "./log/VGG"
 

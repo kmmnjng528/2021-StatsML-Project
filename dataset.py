@@ -58,7 +58,7 @@ class FaceDataset(Dataset):
 
         # image_dir = '.' + self.df.iloc[index, ]['path'][12:]
         image_dir = self.df.iloc[index, ]['path']
-        image_id = self.df.iloc[index, ]['fake'].astype(np.int64)
+        image_id = self.df.iloc[index, ]['real'].astype(np.int64)
 
         image = cv2.imread(image_dir, cv2.COLOR_BGR2RGB)
         # image = crop_face_image(detector, predictor, image_dir)
@@ -72,33 +72,6 @@ class FaceDataset(Dataset):
         image = image/255.0
 
         return image, target
-
-class TestDataset(Dataset):
-    def __init__(self, image, transforms):
-        self.image = image
-        self.transforms = transforms
-
-    def __len__(self):
-        return len(self.image)
-
-    def __getitem__(self, index: int):
-        assert index <= len(self), 'index range error'
-
-        image_name = self.image[index]
-        image_dir = './test/' + image_name
-        
-        image = cv2.imread(image_dir, cv2.COLOR_BGR2RGB)
-        # image = crop_face_image(image)[...,::-1]
-        # image = crop_face_image(detector, predictor, image_dir)
-        image = np.array(image)
-        # image = np.transpose(image, (1,2,0))
-        
-        if self.transforms is not None:
-            image = self.transforms(image=image)['image']
-        
-        image = image/255.0
-        
-        return image_name, image
 
 def get_train_valid_dataloader(options):
 

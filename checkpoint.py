@@ -10,10 +10,14 @@ default_checkpoint = {
     # train
     "train_losses": [],
     "train_accuracy": [],
+    "train_precision": [],
+    "train_recall": [],
 
     # valid
     "valid_losses": [],
     "valid_accuracy": [],
+    "valid_precision": [],
+    "valid_recall": [],
 
     "lr": [], 
     "model": {},
@@ -43,14 +47,22 @@ def write_tensorboard(
     epoch,
     train_loss,
     train_accuracy,
+    train_precision,
+    train_recall,
     valid_loss,
     valid_accuracy,
+    valid_precision,
+    valid_recall,
     model,
 ):
     writer.add_scalar("train_loss", train_loss, epoch)
     writer.add_scalar("train_accuracy", train_accuracy, epoch)
+    writer.add_scalar("train_precision", train_precision, epoch)
+    writer.add_scalar("train_recall", train_recall, epoch)
     writer.add_scalar("valid_loss", valid_loss, epoch)
     writer.add_scalar("valid_accuracy", valid_accuracy, epoch)
+    writer.add_scalar("valid_precision", valid_precision, epoch)
+    writer.add_scalar("valid_recall", valid_recall, epoch)
 
     for name, param in model.named_parameters():
         writer.add_histogram(

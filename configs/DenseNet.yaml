@@ -4,8 +4,8 @@ seed: 42
 device: 'cuda'
 
 data:
-  train: "data/face_images.csv"
-  test: ""
+  train: "data/train.csv"
+  test: "data/test.csv"
   random_split: True # if True, random split from train files
   test_proportions: 0.2 # only if random_split is True
   crop: True
@@ -24,8 +24,9 @@ optimizer:
   lr: 1e-4 # 1e-4
   weight_decay: 1e-2
 
-# checkpoint: "" 
-checkpoint: "./log/DenseNet/checkpoints/0014.pth" # continue to learn or run demo
+checkpoint: "" 
+# checkpoint: "./log/DenseNet/checkpoints/0014.pth" # continue to learn or run demo
+test_checkpoint: "./log/DenseNet/checkpoints/0020.pth"
 
 prefix: "./log/DenseNet"
 

@@ -1,6 +1,9 @@
 '''
 USAGE:
-python demo.py --config_file configs/ResNet.yaml --image_path samples/fake.jpg 
+python test.py --config_file configs/VGG.yaml 
+python test.py --config_file configs/ResNet.yaml 
+python test.py --config_file configs/DenseNet.yaml 
+python test.py --config_file configs/EfficientNet.yaml 
 '''
 
 import os
@@ -11,27 +14,24 @@ import fire
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
 from torchsummary import summary
 from torchvision import models, transforms
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import numpy as np
+import pandas as pd
+from tqdm import tqdm
 from psutil import virtual_memory
 from flags import Flags
 from utils import get_network
 from checkpoint import load_checkpoint
-
-def preprocess(image_path):
-    image = cv2.imread(image_path, cv2.COLOR_BGR2RGB)
-    image = A.Compose([
-        A.Resize(224, 224),
-        ToTensorV2(),
-    ])(image=image)['image']
-    image = image/255.0
-    return image
+from dataset import FaceDataset
+from metrics import accuracy, precision, recall
 
 
-def main(config_file, image_path):
+def main(config_file):
 
     options = Flags(config_file).get()
 
@@ -46,7 +46,7 @@ def main(config_file, image_path):
 
     is_cuda = torch.cuda.is_available()
     print("--------------------------------")
-    print("Running {} on device {}\nWARNING: THIS IS DEMO MODE!!\n".format(options.network, options.device))
+    print("Running {} on device {}\nWARNING: THIS IS TEST MODE!!\n".format(options.network, options.device))
 
     # Print system environments
     current_device = torch.cuda.current_device() if torch.cuda.is_available() else 'CPU'
@@ -91,20 +91,50 @@ def main(config_file, image_path):
 
     summary(model, (3, 224, 224), 32)
 
+    w = options.input_size.width
+    h = options.input_size.height
+
+    transforms_test = A.Compose([
+        A.Resize(w, h),
+        ToTensorV2(),
+    ])
+
+    test = pd.read_csv(options.data.test)
+    test['path'] = test['path'].map(lambda x : './data' + x[12:])
+
+    test_dataset = FaceDataset(image_label=test, transforms=transforms_test)
+    test_dataloader = DataLoader(test_dataset, batch_size=options.batch_size, shuffle=options.data.random_split, num_workers=options.num_workers)
+
+    losses = []
+    acces = []
+    precisions = []
+    recalls = []
+
     with torch.no_grad():
-        classes = ['Fake', 'Real']
-        input = preprocess(image_path).to(options.device)
-        output = model(input.unsqueeze(0))
-        prob = F.softmax(output, dim=1)
+        for i, (images, targets) in tqdm(enumerate(test_dataloader), leave=True):
+            images = images.to(options.device, torch.float)
+            targets = targets.to(options.device, torch.long)
 
-        _, preds = output.max(dim=1)
-        preds = preds.cpu().item()
+            scores = model(images).to(options.device)
+            _, preds = scores.max(dim=1)
 
-        print(
-        "[+] Result\n",
-        "Image path: {}\n".format(image_path),
-        "This image is {}({:.5f})\n".format(classes[preds], prob[0][preds].cpu().item())
-        )
+            loss = F.cross_entropy(scores, targets)
+            acc = accuracy(targets, preds, options.batch_size)
+            pre = precision(targets, preds)
+            rec = recall(targets, preds)
+
+            losses.append(loss.item())
+            acces.append(acc)
+            precisions.append(pre)
+            recalls.append(rec)
+
+    print(
+        "[+] Test result\n",
+        "{:10s}: {:2.8f}\n".format('Loss', np.mean(losses)),
+        "{:10s}: {:2.8f}\n".format('Accuracy', np.mean(acces)),
+        "{:10s}: {:2.8f}\n".format('Precision', np.mean(precisions)),
+        "{:10s}: {:2.8f}\n".format('Recall', np.mean(recalls)),
+    )
 
 if __name__ == '__main__':
     fire.Fire(main)
