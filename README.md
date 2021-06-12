@@ -3,7 +3,6 @@
 <div align="center"><img src="./samples/fake.jpg" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
 
 ## Code architecture
----
 
 ```
 .
@@ -56,21 +55,23 @@
 ```
 
 ## Library
+
 ```bash
 $ pip install -r requirements.txt
 ```
 
 
 ## Data
----
+
 Sampling data from Kaggle Dataset Flickr-Faces-HQ (FFHQ) which is a high-quality image dataset of human faces, originally created as a benchmark for generative adversarial networks (GAN).
 
 - [Thread for real faces dataset](https://www.kaggle.com/c/deepfake-detection-challenge/discussion/122786)
 - [1 Million Fake faces](https://www.kaggle.com/c/deepfake-detection-challenge/discussion/121173)
 
+You can download my sampling dataset in Google Drive [here](https://drive.google.com/file/d/1WkBpVVXPPgvrpRrf9d3eluuXyFNUqRiR/view?usp=sharing).
+
 
 ## Train
----
 
 ```bash
 $ python train.py --config_file=configs/ResNet.yaml
@@ -151,7 +152,6 @@ EARLY_STOPPING_EPOCH: 5
 ```
 
 ## Visualize
----
 
 ```bash
 $ python visualize.py --arch=resnet18
@@ -198,7 +198,6 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 <div align="center"><img src="./results/0-resnet18-gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
 
 ## Demo
----
 
 ```bash
 $ python visualize.py --arch=resnet18
@@ -252,11 +251,11 @@ Estimated Total Size (MB): 2070.14
 ```
 
 ## Contact
----
+
 Minsuk Sung: minsuksung@korea.ac.kr
 
 ## License
----
+
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
 
 The class is licensed under the [MIT License](http://opensource.org/licenses/MIT):
