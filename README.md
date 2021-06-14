@@ -1,6 +1,6 @@
 # Fake Face Detection : Which facial parts are CNNs looking?
 
-<div align="center"><img src="./samples/fake.jpg" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
+<div align="center"><img src="./samples/fake.jpg" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/no-pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
 
 <br>
 <br>
@@ -44,9 +44,8 @@
 │   └── VGG.py
 ├── README.md
 ├── results
-│   ├── 0-resnet18-deconvnet-Fake.png
-│   ├── ...
-│   └── 0-resnet18-vanilla-Fake.png
+│   ├── pretrained
+│   └── no-pretrained
 ├── samples
 │   ├── fake2.jpg
 │   ├── fake.jpg
@@ -141,6 +140,7 @@ input_size:
   width: 224
 
 model:
+  pretrained: False
   in_channels: 3
   init_weights: True
 
@@ -149,8 +149,9 @@ optimizer:
   lr: 1e-4 # 1e-4
   weight_decay: 1e-2
 
-# checkpoint: "" 
-checkpoint: "./log/ResNet/checkpoints/0013.pth" # continue to learn or run demo
+checkpoint: "" 
+# checkpoint: "./log/ResNet/checkpoints/00XX.pth" # continue to learn or run demo
+test_checkpoint: "./log/ResNet/checkpoints/0009.pth"
 
 prefix: "./log/ResNet"
 
@@ -160,14 +161,64 @@ num_epochs: 20
 print_epochs: 1
 dropout_rate: 0.1
 EARLY_STOPPING_EPOCH: 5
+```
 
+## test.py
+```bash
+python test.py --config_file configs/VGG.yaml 
+```
+
+```
+--------------------------------
+Running ResNet on device cuda
+WARNING: THIS IS TEST MODE!!
+
+[+] System environments
+ Device: GeForce RTX 3080
+ Random seed : 42
+ The number of gpus : 1
+ The number of cpus : 20
+ Memory Size : 25G
+
+[+] Network
+ Type: ResNet
+ Checkpoint: ./log/ResNet/checkpoints/0009.pth
+ Model parameters: 11,177,538
+
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1         [32, 64, 112, 112]           9,408
+       BatchNorm2d-2         [32, 64, 112, 112]             128
+              ReLU-3         [32, 64, 112, 112]               0
+
+                            ... SKIP ...
+
+       BasicBlock-66            [32, 512, 7, 7]               0
+        AvgPool2d-67            [32, 512, 1, 1]               0
+           Linear-68                    [32, 2]           1,026
+================================================================
+Total params: 11,177,538
+Trainable params: 11,177,538
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 18.38
+Forward/backward pass size (MB): 2009.13
+Params size (MB): 42.64
+Estimated Total Size (MB): 2070.14
+----------------------------------------------------------------
+63it [00:01, 44.21it/s]
+[+] Test result
+ Loss      : 0.28388108
+ Accuracy  : 0.90327382
+ Precision : 0.91006438
+ Recall    : 0.90846158
 ```
 
 ## visualize.py
 
 ```bash
 $ python visualize.py --arch=resnet18
-                      --model_path=log/ResNet/checkpoints/0013.pth 
                       --target_layer=layer4 
                       --image_paths=samples/fake.jpg
 ``` 
@@ -222,10 +273,8 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 ## demo.py
 
 ```bash
-$ python visualize.py --arch=resnet18
-                      --model_path=log/ResNet/checkpoints/0013.pth 
-                      --target_layer=layer4 
-                      --image_paths=samples/fake.jpg
+$ python demo.py --config_file configs/ResNet.yaml
+                 --image_path samples/fake.jpg
 ``` 
 
 ```
@@ -242,7 +291,7 @@ WARNING: THIS IS DEMO MODE!!
 
 [+] Network
  Type: ResNet
- Checkpoint: ./log/ResNet/checkpoints/0013.pth
+ Checkpoint: ./log/ResNet/checkpoints/0009.pth
  Model parameters: 11,177,538
 
 ----------------------------------------------------------------
@@ -269,7 +318,7 @@ Estimated Total Size (MB): 2070.14
 ----------------------------------------------------------------
 [+] Result
  Image path: samples/fake.jpg
- This image is Fake(0.66083)
+ This image is Fake(0.99995)
 ```
 
 ## Reference

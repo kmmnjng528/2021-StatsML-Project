@@ -83,7 +83,7 @@ def main(config_file, image_path):
     print(
         "[+] Network\n",
         "Type: {}\n".format(options.network),
-        "Checkpoint: {}\n".format(options.checkpoint),
+        "Checkpoint: {}\n".format(options.test_checkpoint),
         "Model parameters: {:,}\n".format(
             sum(p.numel() for p in model.parameters()),
         ),
