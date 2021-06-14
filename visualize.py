@@ -123,6 +123,7 @@ def main(target_layer, config_file, topk=1):
     arch=options.network
     image_paths=options.experiment.vis_input
     output_dir=options.experiment.vis_output
+    file_name = image_paths.split('/')[-1].split('.')[0]
 
     checkpoint = load_checkpoint(options.test_checkpoint, cuda=True)
     model.load_state_dict(checkpoint['model'])
@@ -171,7 +172,7 @@ def main(target_layer, config_file, topk=1):
             save_gradient(
                 filename=os.path.join(
                     output_dir,
-                    "{}-{}-vanilla-{}.png".format(j, arch, classes[ids[j, i]]),
+                    "{}-{}-{}-vanilla-{}.png".format(j, file_name, arch, classes[ids[j, i]]),
                 ),
                 gradient=gradients[j],
             )
@@ -195,7 +196,7 @@ def main(target_layer, config_file, topk=1):
             save_gradient(
                 filename=os.path.join(
                     output_dir,
-                    "{}-{}-deconvnet-{}.png".format(j, arch, classes[ids[j, i]]),
+                    "{}-{}-{}-deconvnet-{}.png".format(j, file_name, arch, classes[ids[j, i]]),
                 ),
                 gradient=gradients[j],
             )
@@ -227,7 +228,7 @@ def main(target_layer, config_file, topk=1):
             save_gradient(
                 filename=os.path.join(
                     output_dir,
-                    "{}-{}-guided-{}.png".format(j, arch, classes[ids[j, i]]),
+                    "{}-{}-{}-guided-{}.png".format(j, file_name, arch, classes[ids[j, i]]),
                 ),
                 gradient=gradients[j],
             )
@@ -236,8 +237,8 @@ def main(target_layer, config_file, topk=1):
             save_gradcam(
                 filename=os.path.join(
                     output_dir,
-                    "{}-{}-gradcam-{}-{}.png".format(
-                        j, arch, target_layer, classes[ids[j, i]]
+                    "{}-{}-{}-gradcam-{}-{}.png".format(
+                        j, file_name, arch, target_layer, classes[ids[j, i]]
                     ),
                 ),
                 gcam=regions[j, 0],
@@ -248,8 +249,8 @@ def main(target_layer, config_file, topk=1):
             save_gradient(
                 filename=os.path.join(
                     output_dir,
-                    "{}-{}-guided_gradcam-{}-{}.png".format(
-                        j, arch, target_layer, classes[ids[j, i]]
+                    "{}-{}-{}-guided_gradcam-{}-{}.png".format(
+                        j, file_name, arch, target_layer, classes[ids[j, i]]
                     ),
                 ),
                 gradient=torch.mul(regions, gradients)[j],

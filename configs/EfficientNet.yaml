@@ -30,7 +30,7 @@ checkpoint: ""
 test_checkpoint: "./log/EfficientNet_NP/checkpoints/0009.pth"
 
 experiment:
-  vis_input: "samples/fake.jpg"
+  vis_input: "samples/fake-occlusion-1.jpg"
   vis_output: "./results"
 
 prefix: "./log/EfficientNet"

@@ -285,6 +285,14 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 
 <div align="center"><img src="./results/no-pretrained/0-vgg11_bn-gradcam-features.28-Fake.png" width=200><img src="./results/no-pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/no-pretrained/0-densenet121-gradcam-features-Fake.png" width=200><img src="./results/no-pretrained/0-efficientnet-gradcam-_conv_head-Fake.png" width=200></div>
 
+### Cover some facial part (Occlusions, ResNet)
+
+<div align="center"><img src="./results/occlusion/0-fake_occlusion_0-ResNet-gradcam-layer1-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_0-ResNet-gradcam-layer2-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_0-ResNet-gradcam-layer3-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_0-ResNet-gradcam-layer4-Fake.png" width=200></div>
+
+<div align="center"><img src="./results/occlusion/0-fake_occlusion_1-ResNet-gradcam-layer1-Real.png" width=200><img src="./results/occlusion/0-fake_occlusion_1-ResNet-gradcam-layer2-Real.png" width=200><img src="./results/occlusion/0-fake_occlusion_1-ResNet-gradcam-layer3-Real.png" width=200><img src="./results/occlusion/0-fake_occlusion_1-ResNet-gradcam-layer4-Real.png" width=200></div>
+
+<div align="center"><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer1-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer2-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer3-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer4-Fake.png" width=200></div>
+
 ## demo.py
 
 ```bash
