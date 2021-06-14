@@ -217,6 +217,19 @@ Estimated Total Size (MB): 2070.14
  Recall    : 0.90846158
 ```
 
+|Models|Pretrained|Accuracy|Precision|Recall|Training times|
+|:---|:---:|:---:|:---:|:---:|:---:|
+|VGG |O|92.85|94.08|93.02|8m|
+|VGG |X|86.21|86.38|87.58|21m|
+|ResNet |O|98.41|99.16|99.29|3m|
+|ResNet |X|90.32|91.00|90.84|7m|
+|DenseNet |O|**98.95**|99.72|**99.79**|21m|
+|DenseNet |X|85.66|86.96|85.84|25m|
+|EfficientNet |O|98.26|**99.79**|98.34|7m|
+|EfficientNet |X|74.65|77.34|70.22|14m|
+
+
+
 ## visualize.py
 
 ```bash
