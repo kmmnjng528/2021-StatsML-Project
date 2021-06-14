@@ -163,6 +163,8 @@ dropout_rate: 0.1
 EARLY_STOPPING_EPOCH: 5
 ```
 
+<img src="./img/experiments_result_tensorboard.png"></img>
+
 ## test.py
 ```bash
 python test.py --config_file configs/VGG.yaml 
@@ -251,11 +253,11 @@ Estimated Total Size (MB): 2070.14
 Images:
         #0: samples/fake.jpg
 Vanilla Backpropagation:
-        #0: Fake (0.66083)
+        #0: Fake (0.99794)
 Deconvolution:
-        #0: Fake (0.66083)
+        #0: Fake (0.99794)
 Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
-        #0: Fake (0.66083)
+        #0: Fake (0.99794)
 ```
 
 ### Visualizing all blocks in ResNet
