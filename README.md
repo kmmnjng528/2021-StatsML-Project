@@ -207,10 +207,17 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
         #0: Fake (0.66083)
 ```
 
-<div align="center"><img src="./results/0-resnet18-gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
-<div align="center"><img src="./results/0-resnet18-guided_gradcam-layer1-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer2-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer3-Fake.png" width=200><img src="./results/0-resnet18-guided_gradcam-layer4-Fake.png" width=200></div>
+### Visualizing all blocks in ResNet
 
-<div align="center"><img src="./results/0-vgg11_bn-gradcam-features.28-Fake.png" width=200><img src="./results/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/0-densenet121-gradcam-features-Fake.png" width=200><img src="./results/0-efficientnet-gradcam-_conv_head-Fake.png" width=200></div>
+<div align="center"><img src="./results/pretrained/0-resnet18-gradcam-layer1-Fake.png" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer2-Fake.png" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer3-Fake.png" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
+
+### Visualizing every models (VGG, ResNet, DenseNet, EfficientNet) - Using pretrained
+
+<div align="center"><img src="./results/pretrained/0-vgg11_bn-gradcam-features.28-Fake.png" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/pretrained/0-densenet121-gradcam-features-Fake.png" width=200><img src="./results/pretrained/0-efficientnet-gradcam-_conv_head-Fake.png" width=200></div>
+
+### Visualizing every models (VGG, ResNet, DenseNet, EfficientNet) - Not using pretrained
+
+<div align="center"><img src="./results/no-pretrained/0-vgg11_bn-gradcam-features.28-Fake.png" width=200><img src="./results/no-pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/no-pretrained/0-densenet121-gradcam-features-Fake.png" width=200><img src="./results/no-pretrained/0-efficientnet-gradcam-_conv_head-Fake.png" width=200></div>
 
 ## demo.py
 

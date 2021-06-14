@@ -14,9 +14,7 @@ def get_network(
 
     if options.network == "VGG":
         # model = VGG('VGG11', in_channels=options.VGG.in_channels, num_classes=options.VGG.num_classes, init_weights=options.VGG.init_weights)
-        model = models.vgg11_bn(pretrained=True)
-        for param in model.parameters():
-            param.requires_grad = False
+        model = models.vgg11_bn(pretrained=options.model.pretrained)
         # 새로 생성된 모듈의 매개변수는 기본값이 requires_grad=True
         model.classifier = nn.Sequential(
             nn.Linear(512 * 7 * 7, 4096),
@@ -28,15 +26,15 @@ def get_network(
             nn.Linear(4096, options.data.num_classes),
         )
     elif options.network == "ResNet":        
-        model = models.resnet18(pretrained=True)
+        model = models.resnet18(pretrained=options.model.pretrained)
         model.fc = nn.Linear(512, options.data.num_classes)
 
     elif options.network == "DenseNet":        
-        model = models.densenet121(pretrained=True)
+        model = models.densenet121(pretrained=options.model.pretrained)
         model.classifier = nn.Linear(1024, options.data.num_classes)
 
     elif options.network == "SqueezeNet":        
-        model = models.squeezenet1_0(pretrained=True)
+        model = models.squeezenet1_0(pretrained=options.model.pretrained)
         model.classifier = nn.Sequential(
             nn.Dropout(p=0.5),
             nn.Conv2d(512, options.data.num_classes, kernel_size=1),
@@ -44,11 +42,18 @@ def get_network(
             nn.AdaptiveAvgPool2d((1, 1))
         )
 
-    elif options.network == "EfficientNet":        
-        model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=2)
+    elif options.network == "EfficientNet":     
+        if options.model.pretrained:   
+            model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=2)
+        else:
+            model = EfficientNet.from_name('efficientnet-b0', num_classes=2)
 
     else:
         raise NotImplementedError
+
+    if not options.model.pretrained:
+        for param in model.parameters():
+            param.requires_grad = True
 
     return model.to(options.device)
 

@@ -16,6 +16,7 @@ input_size:
   width: 224
 
 model:
+  pretrained: False
   in_channels: 3
   init_weights: True
 
@@ -26,7 +27,7 @@ optimizer:
 
 checkpoint: "" 
 # checkpoint: "./log/EfficientNet/checkpoints/0012.pth"  # continue to learn or run demo
-test_checkpoint: "./log/EfficientNet/checkpoints/0017.pth"
+test_checkpoint: "./log/EfficientNet_NP/checkpoints/0009.pth"
 
 prefix: "./log/EfficientNet"
 

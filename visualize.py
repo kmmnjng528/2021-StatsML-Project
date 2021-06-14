@@ -4,9 +4,10 @@
 '''
 Author:   Kazuto Nakashima
 URL:      https://github.com/kazuto1011/grad-cam-pytorch
-USAGE:    python visualize.py --arch=resnet18 --model_path=log/ResNet/checkpoints/0019.pth --target_layer=layer4 --image_paths=samples/fake.jpg --config_file configs/ResNet.yaml
-USAGE:    python visualize.py --arch=vgg11_bn --model_path=log/VGG/checkpoints/0012.pth --target_layer=features --image_paths=samples/fake.jpg --config_file configs/VGG.yaml
-USAGE:    python visualize.py --arch=densenet121 --model_path=log/DenseNet/checkpoints/0015.pth --target_layer=features --image_paths=samples/fake.jpg --config_file configs/DenseNet.yaml
+USAGE:    python visualize.py --arch=resnet18 --target_layer=layer4 --image_paths=samples/fake.jpg --config_file configs/ResNet.yaml
+USAGE:    python visualize.py --arch=vgg11_bn --target_layer=features.28 --image_paths=samples/fake.jpg --config_file configs/VGG.yaml
+USAGE:    python visualize.py --arch=densenet121 --target_layer=features --image_paths=samples/fake.jpg --config_file configs/DenseNet.yaml
+USAGE:    python visualize.py --arch=efficientnet --target_layer=_conv_head --image_paths=samples/fake.jpg --config_file configs/EfficientNet.yaml
 '''
 
 from __future__ import print_function
@@ -114,7 +115,7 @@ model_names = sorted(
     if name.islower() and not name.startswith("__") and callable(models.__dict__[name])
 )
 
-def main(image_paths, model_path, target_layer, arch, config_file, topk=1, output_dir="./results", cuda=True):
+def main(image_paths, target_layer, arch, config_file, topk=1, output_dir="./results", cuda=True):
     """
     Visualize model responses given multiple images
     """

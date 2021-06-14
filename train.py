@@ -1,6 +1,9 @@
 '''
 USAGE
+python train.py --config_file=configs/VGG.yaml
 python train.py --config_file=configs/ResNet.yaml
+python train.py --config_file=configs/DenseNet.yaml
+python train.py --config_file=configs/EfficientNet.yaml
 '''
 
 import os

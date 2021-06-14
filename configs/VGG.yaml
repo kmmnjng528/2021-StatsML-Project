@@ -16,6 +16,7 @@ input_size:
   width: 224
 
 model:
+  pretrained: False
   in_channels: 3
   init_weights: True
 
@@ -26,7 +27,7 @@ optimizer:
 
 checkpoint: "" 
 # checkpoint: "./log/VGG/checkpoints/0003.pth"
-test_checkpoint: "./log/VGG/checkpoints/0012.pth"
+test_checkpoint: "./log/VGG_NP/checkpoints/0020.pth"
 
 prefix: "./log/VGG"
 
