@@ -4,10 +4,10 @@
 '''
 Author:   Kazuto Nakashima
 URL:      https://github.com/kazuto1011/grad-cam-pytorch
-USAGE:    python visualize.py --arch=resnet18 --target_layer=layer4 --image_paths=samples/fake.jpg --config_file configs/ResNet.yaml
-USAGE:    python visualize.py --arch=vgg11_bn --target_layer=features.28 --image_paths=samples/fake.jpg --config_file configs/VGG.yaml
-USAGE:    python visualize.py --arch=densenet121 --target_layer=features --image_paths=samples/fake.jpg --config_file configs/DenseNet.yaml
-USAGE:    python visualize.py --arch=efficientnet --target_layer=_conv_head --image_paths=samples/fake.jpg --config_file configs/EfficientNet.yaml
+USAGE:    python visualize.py --config_file configs/VGG.yaml --target_layer=features.28
+USAGE:    python visualize.py --config_file configs/ResNet.yaml --target_layer=layer4
+USAGE:    python visualize.py --config_file configs/DenseNet.yaml --target_layer=features
+USAGE:    python visualize.py --config_file configs/EfficientNet.yaml --target_layer=_conv_head
 '''
 
 from __future__ import print_function
@@ -33,6 +33,7 @@ from checkpoint import load_checkpoint
 from flags import Flags
 
 from utils import (
+    get_network,
     BackPropagation,
     Deconvnet,
     GradCAM,
@@ -55,16 +56,6 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)  # type: ignore
 torch.backends.cudnn.deterministic = True  # type: ignore
 torch.backends.cudnn.benchmark = True  # type: ignore
-
-def get_device(cuda):
-    cuda = cuda and torch.cuda.is_available()
-    device = torch.device("cuda" if cuda else "cpu")
-    if cuda:
-        current_device = torch.cuda.current_device()
-        print("Device:", torch.cuda.get_device_name(current_device))
-    else:
-        print("Device: CPU")
-    return device
 
 
 def load_images(image_paths):
@@ -115,13 +106,12 @@ model_names = sorted(
     if name.islower() and not name.startswith("__") and callable(models.__dict__[name])
 )
 
-def main(image_paths, target_layer, arch, config_file, topk=1, output_dir="./results", cuda=True):
+def main(target_layer, config_file, topk=1):
     """
     Visualize model responses given multiple images
     """
 
     options = Flags(config_file).get()
-    device = get_device(cuda)
 
     # Synset words
     # classes = get_classtable()
@@ -129,25 +119,10 @@ def main(image_paths, target_layer, arch, config_file, topk=1, output_dir="./res
 
     # Model from torchvision
     
-    if arch == 'resnet18':
-        model = models.__dict__[arch](pretrained=True)
-        model.fc = nn.Linear(512, 2)
-    elif arch == 'vgg11_bn':
-        model = models.__dict__[arch](pretrained=True)
-        model.classifier = nn.Sequential(
-            nn.Linear(512 * 7 * 7, 4096),
-            nn.ReLU(True),
-            nn.Dropout(),
-            nn.Linear(4096, 4096),
-            nn.ReLU(True),
-            nn.Dropout(),
-            nn.Linear(4096, options.data.num_classes),
-        )
-    elif arch == 'densenet121':
-        model = models.__dict__[arch](pretrained=True)
-        model.classifier = nn.Linear(1024, options.data.num_classes)
-    elif arch == 'efficientnet':
-        model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=2)
+    model = get_network(options)
+    arch=options.network
+    image_paths=options.experiment.vis_input
+    output_dir=options.experiment.vis_output
 
     checkpoint = load_checkpoint(options.test_checkpoint, cuda=True)
     model.load_state_dict(checkpoint['model'])
@@ -169,7 +144,7 @@ def main(image_paths, target_layer, arch, config_file, topk=1, output_dir="./res
 
     # Images
     images, raw_images = load_images([image_paths])
-    images = torch.stack(images).to(device)
+    images = torch.stack(images).to(options.device)
 
     """
     Common usage:

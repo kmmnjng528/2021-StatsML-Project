@@ -29,6 +29,10 @@ checkpoint: ""
 # checkpoint: "./log/EfficientNet/checkpoints/0012.pth"  # continue to learn or run demo
 test_checkpoint: "./log/EfficientNet_NP/checkpoints/0009.pth"
 
+experiment:
+  vis_input: "samples/fake.jpg"
+  vis_output: "./results"
+
 prefix: "./log/EfficientNet"
 
 batch_size: 32

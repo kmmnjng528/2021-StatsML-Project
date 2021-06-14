@@ -1,6 +1,6 @@
 # Fake Face Detection : Which facial parts are CNNs looking?
 
-<div align="center"><img src="./samples/fake.jpg" width=200><img src="./results/pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200><img src="./results/no-pretrained/0-resnet18-gradcam-layer4-Fake.png" width=200></div>
+<div align="center"><img src="./img/gradcam_example.gif"></div>
 
 <br>
 <br>

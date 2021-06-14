@@ -3,6 +3,7 @@ _model_
 log
 *.out
 data
+results/etc/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

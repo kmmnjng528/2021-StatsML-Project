@@ -29,6 +29,10 @@ checkpoint: ""
 # checkpoint: "./log/DenseNet/checkpoints/0014.pth" # continue to learn or run demo
 test_checkpoint: "./log/DenseNet_NP/checkpoints/0017.pth"
 
+experiment:
+  vis_input: "samples/fake.jpg"
+  vis_output: "./results"
+
 prefix: "./log/DenseNet"
 
 batch_size: 32
