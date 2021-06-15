@@ -1,12 +1,12 @@
-# Fake Face Detection : Which facial parts are CNNs looking?
+# Real/Fake image classification
 
 <div align="center"><img src="./img/gradcam_example.gif"></div>
 
 <br>
 <br>
-<div align="right">Minsuk Sung</div>
-<div align="right">Dept. of A.I, Korea Univ</div>
-<div align="right">minsuksung@korea.ac.kr</div>
+<div align="right">Minjeong Kim</div>
+<div align="right">Dept. of Statistics, Sookmyung Women Univ</div>
+<div align="right">kmmnjng528@gmail.com</div>
 <br>
 <br>
 
