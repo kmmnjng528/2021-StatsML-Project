@@ -30,7 +30,7 @@ checkpoint: ""
 test_checkpoint: "./log/ResNet_P/checkpoints/0009.pth"
 
 experiment:
-  vis_input: "samples/fake_occlusion_0.jpg"
+  vis_input: "samples/test_my_face.jpeg"
   # vis_input: "samples/fake.jpg"
   vis_output: "./results"
 

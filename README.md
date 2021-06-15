@@ -293,6 +293,14 @@ Grad-CAM/Guided Backpropagation/Guided Grad-CAM:
 
 <div align="center"><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer1-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer2-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer3-Fake.png" width=200><img src="./results/occlusion/0-fake_occlusion_2-ResNet-gradcam-layer4-Fake.png" width=200></div>
 
+### Crop only facial area (ResNet)
+
+<div align="center"><img src="./results/crop/0-fake_only_face-ResNet-gradcam-layer1-Fake.png" width=200><img src="./results/crop/0-fake_only_face-ResNet-gradcam-layer2-Fake.png" width=200><img src="./results/crop/0-fake_only_face-ResNet-gradcam-layer3-Fake.png" width=200><img src="./results/crop/0-fake_only_face-ResNet-gradcam-layer4-Fake.png" width=200></div>
+
+### Real-world example (ResNet)
+
+<div align="center"><img src="./samples/fake_swap_gf.jpg" width=200><img src="./results/real-world/0-fake_swap_gf-ResNet-gradcam-layer4-Real.png" width=200><img src="./samples/test_my_face.jpeg" width=200><img src="./results/real-world/0-test_my_face-ResNet-gradcam-layer4-Real.png" width=200></div>
+
 ## demo.py
 
 ```bash
@@ -340,9 +348,11 @@ Params size (MB): 42.64
 Estimated Total Size (MB): 2070.14
 ----------------------------------------------------------------
 [+] Result
- Image path: samples/fake.jpg
- This image is Fake(0.99995)
+ Image path: samples/kmj.jpeg
+ This image is Real(1.00000)
 ```
+
+<div align="center"><img src="./samples/kmj.jpeg" width=200><img src="./results/real-world/0-kmj-ResNet-gradcam-layer4-Real.png" width=200></div>
 
 ## Reference
 - Tolosana, R., Vera-Rodriguez, R., Fierrez, J., Morales, A., & Ortega-Garcia, J. (2020). Deepfakes and beyond: A survey of face manipulation and fake detection. Information Fusion, 64, 131-148.

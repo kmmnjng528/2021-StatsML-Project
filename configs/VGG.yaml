@@ -30,7 +30,7 @@ checkpoint: ""
 test_checkpoint: "./log/VGG_NP/checkpoints/0020.pth"
 
 experiment:
-  vis_input: "samples/fake.jpg"
+  vis_input: "samples/fake_only_face.jpg"
   vis_output: "./results"
 
 prefix: "./log/VGG"
